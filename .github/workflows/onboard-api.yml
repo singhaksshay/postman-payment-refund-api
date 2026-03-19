@@ -10,23 +10,20 @@ on:
 jobs:
   onboard:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      actions: write
-      repository-projects: write
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.POSTMAN_GITHUB_TOKEN }}
       
-      - name: Run Postman Onboarding
-        uses: postman-cs/postman-api-onboarding-action@main
-        with:
-          spec-url: https://raw.githubusercontent.com/${{ github.repository }}/main/specs/payment-refund-api-openapi.yaml
-          postman-api-key: ${{ secrets.POSTMAN_API_KEY }}
-          project-name: "Payment Refund API"
-          github-token: ${{ secrets.POSTMAN_GITHUB_TOKEN }}
-        env:
-          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      - name: Import spec to Postman
+        run: |
+          echo "Importing Payment Refund API spec to Postman..."
+          curl -X POST https://api.getpostman.com/apis \
+            -H "X-API-Key: ${{ secrets.POSTMAN_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "type": "openapi3",
+              "input": "'$(cat specs/payment-refund-api-openapi.yaml | jq -Rs .)'",
+              "name": "Payment Refund API"
+            }'
+          echo "Spec imported successfully"
