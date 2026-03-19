@@ -15,12 +15,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Import spec to Postman
+      - name: Create workspace and import spec
+        env:
+          POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
         run: |
-          SPEC_CONTENT=$(cat specs/payment-refund-api-openapi.yaml)
-          echo "Importing Payment Refund API spec to Postman..."
-          curl -X POST https://api.getpostman.com/apis \
-            -H "X-API-Key: ${{ secrets.POSTMAN_API_KEY }}" \
+          echo "Creating Payment Refund API workspace and importing spec..."
+          WORKSPACE_RESPONSE=$(curl -s -X POST https://api.getpostman.com/workspaces \
+            -H "X-API-Key: ${POSTMAN_API_KEY}" \
             -H "Content-Type: application/json" \
-            -d '{"type":"openapi3","input":"'"${SPEC_CONTENT}"'","name":"Payment Refund API"}'
-          echo "Spec imported successfully"
+            -d '{"workspace":{"name":"Payment Refund API - Development","type":"personal"}}')
+          echo "Workspace response: $WORKSPACE_RESPONSE"
+          WORKSPACE_ID=$(echo $WORKSPACE_RESPONSE | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -1)
+          echo "Workspace ID: $WORKSPACE_ID"
+          echo "Workspace created successfully"
