@@ -28,3 +28,5 @@ jobs:
           postman-api-key: ${{ secrets.POSTMAN_API_KEY }}
           project-name: "Payment Refund API"
           github-token: ${{ secrets.POSTMAN_GITHUB_TOKEN }}
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
