@@ -17,13 +17,10 @@ jobs:
       
       - name: Import spec to Postman
         run: |
+          SPEC_CONTENT=$(cat specs/payment-refund-api-openapi.yaml)
           echo "Importing Payment Refund API spec to Postman..."
           curl -X POST https://api.getpostman.com/apis \
             -H "X-API-Key: ${{ secrets.POSTMAN_API_KEY }}" \
             -H "Content-Type: application/json" \
-            -d '{
-              "type": "openapi3",
-              "input": "'$(cat specs/payment-refund-api-openapi.yaml | jq -Rs .)'",
-              "name": "Payment Refund API"
-            }'
+            -d '{"type":"openapi3","input":"'"${SPEC_CONTENT}"'","name":"Payment Refund API"}'
           echo "Spec imported successfully"
