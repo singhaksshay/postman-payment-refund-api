@@ -1,0 +1,6 @@
+type: folder
+name: refunds
+items:
+  - ref: ./{refundId}/folder.yaml
+  - ref: ./Create a new refund.request.yaml
+  - ref: ./List refunds.request.yaml

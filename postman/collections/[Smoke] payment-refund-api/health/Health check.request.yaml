@@ -1,0 +1,66 @@
+type: http
+name: Health check
+url: '{{baseUrl}}/health'
+method: GET
+headers:
+  - key: Accept
+    value: application/json
+scripts:
+  - type: afterResponse
+    code:
+      - // [Smoke] Auto-generated test assertions
+      - pm.test('Status code is successful (2xx)', function () {
+      - '    pm.response.to.be.success;'
+      - '});'
+      - pm.test('Response time is acceptable', function () {
+      - '    var threshold = parseInt(pm.environment.get(''RESPONSE_TIME_THRESHOLD'') || ''2000'', 10);'
+      - '    pm.expect(pm.response.responseTime).to.be.below(threshold);'
+      - '});'
+      - pm.test('Response body is not empty', function () {
+      - '    if (pm.response.code !== 204) {'
+      - '        var body = pm.response.text();'
+      - '        pm.expect(body.length).to.be.above(0);'
+      - '    }'
+      - '});'
+    language: text/javascript
+examples:
+  - response:
+      statusCode: 200
+      statusText: OK
+      body:
+        type: json
+        content: |-
+          {
+            "status": "healthy",
+            "timestamp": "2024-01-15T10:30:00Z",
+            "version": "2.1.0",
+            "services": {
+              "database": "operational",
+              "paymentGateway": "operational",
+              "notificationService": "operational"
+            }
+          }
+      headers:
+        - key: Content-Type
+          value: application/json
+    name: Service is healthy
+  - response:
+      statusCode: 503
+      statusText: Service Unavailable
+      body:
+        type: json
+        content: |-
+          {
+            "status": "unhealthy",
+            "timestamp": "2024-01-15T10:30:00Z",
+            "version": "2.1.0",
+            "services": {
+              "database": "down",
+              "paymentGateway": "down",
+              "notificationService": "operational"
+            }
+          }
+      headers:
+        - key: Content-Type
+          value: application/json
+    name: Service is unhealthy

@@ -1,0 +1,43 @@
+$schema: https://schema.postman.com/json/draft-2020-12/collection/v3.0.0/
+type: collection
+name: '[Contract] payment-refund-api'
+description: |-
+  Comprehensive API for managing payment refunds in a financial services platform.
+  This API handles refund creation, status tracking, cancellation, and reporting for
+  payment transactions processed through the authorization and capture workflow.
+
+  **Authentication:**
+  - External partners: OAuth 2.0 (Bearer token)
+  - Internal services: JWT token (Bearer token)
+
+  **Rate Limits:**
+  - Standard tier: 100 requests/minute
+  - Enterprise tier: 1000 requests/minute
+
+
+  Contact Support:
+   Name: Payment Platform Team
+   Email: payment-platform@example.com
+id: da59842d-814e-4625-a53f-ff8890091526
+auth:
+  type: oauth2
+  credentials:
+    - key: scope
+      value: refunds:read refunds:write refunds:admin
+      type: string
+    - key: accessTokenUrl
+      value: https://auth.example.com/oauth2/token
+      type: string
+    - key: authUrl
+      value: https://auth.example.com/oauth2/authorize
+      type: string
+    - key: grant_type
+      value: authorization_code
+      type: string
+variables:
+  - key: baseUrl
+    value: https://api.payments.example.com/v2
+items:
+  - ref: ./refunds/folder.yaml
+  - ref: ./health/folder.yaml
+  - ref: ./00 - Resolve Secrets.request.yaml

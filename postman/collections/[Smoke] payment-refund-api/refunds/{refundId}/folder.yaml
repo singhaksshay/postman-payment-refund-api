@@ -1,0 +1,6 @@
+type: folder
+name: '{refundId}'
+items:
+  - ref: ./status/folder.yaml
+  - ref: ./cancel/folder.yaml
+  - ref: ./Get refund details.request.yaml

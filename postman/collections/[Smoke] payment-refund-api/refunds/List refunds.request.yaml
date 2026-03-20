@@ -1,0 +1,172 @@
+type: http
+name: List refunds
+url: '{{baseUrl}}/refunds?transactionId=txn_1234567890abcdef&status=pending&startDate=2024-01-01T00:00:00Z&endDate=2024-01-31T23:59:59Z&page=1&pageSize=20'
+method: GET
+headers:
+  - key: Accept
+    value: application/json
+queryParams:
+  - key: transactionId
+    value: txn_1234567890abcdef
+    description: Filter refunds by transaction ID
+  - key: status
+    value: pending
+    description: Filter refunds by status
+  - key: startDate
+    value: '2024-01-01T00:00:00Z'
+    description: Filter refunds created on or after this date
+  - key: endDate
+    value: '2024-01-31T23:59:59Z'
+    description: Filter refunds created on or before this date
+  - key: page
+    value: '1'
+    description: Page number for pagination (1-based)
+  - key: pageSize
+    value: '20'
+    description: Number of items per page
+scripts:
+  - type: afterResponse
+    code:
+      - // [Smoke] Auto-generated test assertions
+      - pm.test('Status code is successful (2xx)', function () {
+      - '    pm.response.to.be.success;'
+      - '});'
+      - pm.test('Response time is acceptable', function () {
+      - '    var threshold = parseInt(pm.environment.get(''RESPONSE_TIME_THRESHOLD'') || ''2000'', 10);'
+      - '    pm.expect(pm.response.responseTime).to.be.below(threshold);'
+      - '});'
+      - pm.test('Response body is not empty', function () {
+      - '    if (pm.response.code !== 204) {'
+      - '        var body = pm.response.text();'
+      - '        pm.expect(body.length).to.be.above(0);'
+      - '    }'
+      - '});'
+    language: text/javascript
+examples:
+  - response:
+      statusCode: 200
+      statusText: OK
+      body:
+        type: json
+        content: |-
+          {
+            "refunds": [
+              {
+                "refundId": "rfnd_abc123def456",
+                "transactionId": "txn_1234567890abcdef",
+                "status": "completed",
+                "amount": 5000,
+                "currency": "USD",
+                "refundAmount": 5000,
+                "refundCurrency": "USD",
+                "reason": "Customer requested refund",
+                "createdAt": "2024-01-15T10:30:00Z",
+                "completedAt": "2024-01-15T14:25:00Z",
+                "links": {
+                  "self": "/refunds/rfnd_abc123def456"
+                }
+              },
+              {
+                "refundId": "rfnd_xyz789ghi012",
+                "transactionId": "txn_0987654321fedcba",
+                "status": "pending",
+                "amount": 5000,
+                "currency": "USD",
+                "refundAmount": 2500,
+                "refundCurrency": "USD",
+                "reason": "Partial refund for damaged item",
+                "createdAt": "2024-01-15T11:00:00Z",
+                "links": {
+                  "self": "/refunds/rfnd_xyz789ghi012"
+                }
+              }
+            ],
+            "pagination": {
+              "page": 1,
+              "pageSize": 20,
+              "totalPages": 3,
+              "totalItems": 47,
+              "hasNext": true,
+              "hasPrevious": false
+            }
+          }
+      headers:
+        - key: Content-Type
+          value: application/json
+    name: Successful response with refund list
+  - response:
+      statusCode: 400
+      statusText: Bad Request
+      body:
+        type: json
+        content: |-
+          {
+            "error": "VALIDATION_ERROR",
+            "message": "Invalid request parameters",
+            "details": {
+              "field": "transactionId",
+              "issue": "Invalid format"
+            },
+            "code": "VALIDATION_ERROR",
+            "timestamp": "2024-01-15T10:30:00Z"
+          }
+      headers:
+        - key: Content-Type
+          value: application/json
+    name: Bad request - Invalid input
+  - response:
+      statusCode: 401
+      statusText: Unauthorized
+      body:
+        type: json
+        content: |-
+          {
+            "error": "UNAUTHORIZED",
+            "message": "Authentication token is required",
+            "code": "AUTHENTICATION_ERROR",
+            "timestamp": "2024-01-15T10:30:00Z"
+          }
+      headers:
+        - key: Content-Type
+          value: application/json
+    name: Unauthorized - Invalid or missing authentication
+  - response:
+      statusCode: 429
+      statusText: Too Many Requests
+      body:
+        type: json
+        content: |-
+          {
+            "error": "RATE_LIMIT_EXCEEDED",
+            "message": "Rate limit exceeded. Please retry after the specified time",
+            "details": {
+              "limit": 100,
+              "window": "1 minute",
+              "retryAfter": 45
+            },
+            "code": "RATE_LIMIT_ERROR",
+            "timestamp": "2024-01-15T10:30:00Z"
+          }
+      headers:
+        - key: Content-Type
+          value: application/json
+    name: Too many requests - Rate limit exceeded
+  - response:
+      statusCode: 500
+      statusText: Internal Server Error
+      body:
+        type: json
+        content: |-
+          {
+            "error": "INTERNAL_SERVER_ERROR",
+            "message": "An unexpected error occurred",
+            "details": {
+              "requestId": "req_abc123def456"
+            },
+            "code": "SERVER_ERROR",
+            "timestamp": "2024-01-15T10:30:00Z"
+          }
+      headers:
+        - key: Content-Type
+          value: application/json
+    name: Internal server error

@@ -1,0 +1,48 @@
+type: http
+name: Health check
+url: '{{baseUrl}}/health'
+method: GET
+headers:
+  - key: Accept
+    value: application/json
+examples:
+  - response:
+      statusCode: 200
+      statusText: OK
+      body:
+        type: json
+        content: |-
+          {
+            "status": "healthy",
+            "timestamp": "2024-01-15T10:30:00Z",
+            "version": "2.1.0",
+            "services": {
+              "database": "operational",
+              "paymentGateway": "operational",
+              "notificationService": "operational"
+            }
+          }
+      headers:
+        - key: Content-Type
+          value: application/json
+    name: Service is healthy
+  - response:
+      statusCode: 503
+      statusText: Service Unavailable
+      body:
+        type: json
+        content: |-
+          {
+            "status": "unhealthy",
+            "timestamp": "2024-01-15T10:30:00Z",
+            "version": "2.1.0",
+            "services": {
+              "database": "down",
+              "paymentGateway": "down",
+              "notificationService": "operational"
+            }
+          }
+      headers:
+        - key: Content-Type
+          value: application/json
+    name: Service is unhealthy

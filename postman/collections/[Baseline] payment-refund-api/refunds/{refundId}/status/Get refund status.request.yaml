@@ -1,0 +1,82 @@
+type: http
+name: Get refund status
+url: '{{baseUrl}}/refunds/:refundId/status'
+method: GET
+headers:
+  - key: Accept
+    value: application/json
+pathVariables:
+  - key: refundId
+    value: rfnd_abc123def456
+    description: Unique identifier for the refund
+examples:
+  - response:
+      statusCode: 200
+      statusText: OK
+      body:
+        type: json
+        content: |-
+          {
+            "refundId": "rfnd_xyz789ghi012",
+            "status": "pending",
+            "updatedAt": "2024-01-15T11:00:00Z",
+            "estimatedCompletionTime": "2024-01-15T15:00:00Z"
+          }
+      headers:
+        - key: Content-Type
+          value: application/json
+    name: Refund status retrieved successfully
+  - response:
+      statusCode: 401
+      statusText: Unauthorized
+      body:
+        type: json
+        content: |-
+          {
+            "error": "UNAUTHORIZED",
+            "message": "Authentication token is required",
+            "code": "AUTHENTICATION_ERROR",
+            "timestamp": "2024-01-15T10:30:00Z"
+          }
+      headers:
+        - key: Content-Type
+          value: application/json
+    name: Unauthorized - Invalid or missing authentication
+  - response:
+      statusCode: 404
+      statusText: Not Found
+      body:
+        type: json
+        content: |-
+          {
+            "error": "REFUND_NOT_FOUND",
+            "message": "The specified refund was not found",
+            "details": {
+              "refundId": "rfnd_invalid123"
+            },
+            "code": "RESOURCE_NOT_FOUND",
+            "timestamp": "2024-01-15T10:30:00Z"
+          }
+      headers:
+        - key: Content-Type
+          value: application/json
+    name: Refund not found
+  - response:
+      statusCode: 500
+      statusText: Internal Server Error
+      body:
+        type: json
+        content: |-
+          {
+            "error": "INTERNAL_SERVER_ERROR",
+            "message": "An unexpected error occurred",
+            "details": {
+              "requestId": "req_abc123def456"
+            },
+            "code": "SERVER_ERROR",
+            "timestamp": "2024-01-15T10:30:00Z"
+          }
+      headers:
+        - key: Content-Type
+          value: application/json
+    name: Internal server error
