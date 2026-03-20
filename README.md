@@ -304,3 +304,27 @@ For services using mutual TLS authentication:
 - [Postman API Authentication](https://learning.postman.com/docs/developer/postman-api/authentication/)
 - [Postman Spec Hub](https://learning.postman.com/docs/designing-and-developing-your-api/managing-apis/)
 - [Postman CLI](https://learning.postman.com/docs/postman-cli/postman-cli-overview/)
+
+---
+
+## How I Used AI
+
+AI assistance was used throughout this exercise in line with the stated policy: use it to accelerate, not to replace judgment.
+
+### What AI helped with
+- Cross-referencing the three action READMEs to understand how `postman-bootstrap-action` and `postman-repo-sync-action` chain together inside the composite
+- Drafting the initial workflow YAML structure based on the action input/output contract
+- Writing the first draft of this README — reviewed, edited, and validated by me
+- Formatting tables and structuring the consulting presentation content
+
+### What I wrote, decided, and validated myself
+- **Service selection and sequencing** — chose Payments as Service 1 (richest spec, best examples for demonstrating collection quality) and Loans as Service 2 (meaningful differences in auth and environments without changing the CI/CD pattern, making the delta easy to articulate)
+- **Workflow design decisions** — `generate-ci-workflow: false` to avoid the action generating a conflicting workflow file; one repo per service to mirror real engagement patterns
+- **Environment and domain mapping** — environment names and runtime URLs pulled directly from the OpenAPI `servers` blocks in each spec, not invented
+- **Every workflow run** — triggered, watched, and validated by me against a real Postman Enterprise workspace. All artifacts are real outputs, not mocked
+- **Issues identification and documentation** — the requester invite failure, Node.js 20 deprecation warning, spec lint warnings, and session-scoped token limitation were all identified, understood, and documented by me
+- **All consulting content** — the adaptation plan, working session structure, 90-day scaling roadmap, ROI assumptions and math, and handoff plan are my own thinking
+
+### What I changed or overrode from AI suggestions
+- Initial workflow draft included `system-env-map-json` and `governance-mapping-json` inputs with placeholder values — I removed these after reading the action README carefully and understanding they require real Postman system environment UUIDs that don't exist in our exercise context. Including fake values would have caused silent failures.
+- README first draft was more generic — I rewrote the "What Changed Per Service" and "Trade-offs" sections significantly to reflect what actually happened during the runs, not a theoretical comparison
