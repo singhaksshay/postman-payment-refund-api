@@ -10,21 +10,24 @@ on:
 jobs:
   onboard:
     runs-on: ubuntu-latest
-    
+    permissions:
+      actions: write
+      contents: write
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      
-      - name: Create workspace and import spec
-        env:
-          POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
-        run: |
-          echo "Creating Payment Refund API workspace and importing spec..."
-          WORKSPACE_RESPONSE=$(curl -s -X POST https://api.getpostman.com/workspaces \
-            -H "X-API-Key: ${POSTMAN_API_KEY}" \
-            -H "Content-Type: application/json" \
-            -d '{"workspace":{"name":"Payment Refund API - Development","type":"personal"}}')
-          echo "Workspace response: $WORKSPACE_RESPONSE"
-          WORKSPACE_ID=$(echo $WORKSPACE_RESPONSE | grep -o '"id":"[^"]*' | cut -d'"' -f4 | head -1)
-          echo "Workspace ID: $WORKSPACE_ID"
-          echo "Workspace created successfully"
+      - uses: actions/checkout@v4
+
+      - uses: postman-cs/postman-api-onboarding-action@v0
+        with:
+          project-name: payment-refund-api
+          domain: payments
+          domain-code: PAY
+          requester-email: singhaksshay@icloud.com
+          spec-url: https://raw.githubusercontent.com/singhaksshay/postman-payment-refund-api/main/specs/payment-refund-api-openapi.yaml
+          environments-json: '["prod","uat","qa","dev"]'
+          env-runtime-urls-json: '{"prod":"https://api.payments.example.com/v2","uat":"https://api-uat.payments.example.com/v2","qa":"https://api-qa.payments.example.com/v2","dev":"https://api-dev.payments.example.com/v2"}'
+          generate-ci-workflow: false
+          postman-api-key: ${{ secrets.POSTMAN_API_KEY }}
+          postman-access-token: ${{ secrets.POSTMAN_ACCESS_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          gh-fallback-token: ${{ secrets.GH_FALLBACK_TOKEN }}
