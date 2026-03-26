@@ -328,3 +328,15 @@ AI assistance was used throughout this exercise in line with the stated policy: 
 ### What I changed or overrode from AI suggestions
 - Initial workflow draft included `system-env-map-json` and `governance-mapping-json` inputs with placeholder values — I removed these after reading the action README carefully and understanding they require real Postman system environment UUIDs that don't exist in our exercise context. Including fake values would have caused silent failures.
 - README first draft was more generic — I rewrote the "What Changed Per Service" and "Trade-offs" sections significantly to reflect what actually happened during the runs, not a theoretical comparison
+
+---
+
+## Collection Export Formats
+
+The generated collections exist in two formats in this repo:
+
+**YAML format** (`postman/collections/`): This is the native format produced by the `postman-repo-sync-action` for git sync. Each collection is broken into individual request files organized by endpoint — this is Postman's preferred format for version control as it makes diffs readable.
+
+**JSON format** (`postman/exports/`): These are standard Postman Collection v2.1 JSON exports, manually exported from the Postman workspace. They can be imported directly into any Postman client via **Import → Upload Files**.
+
+Both formats represent the same collections. The YAML files are the live source of truth maintained by the workflow on every run. The JSON files are provided for direct import convenience.
