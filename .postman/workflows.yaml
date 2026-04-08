@@ -1,0 +1,8 @@
+workflows:
+  syncSpecToCollection:
+    - spec: ../specs/payment-refund-api-openapi.yaml
+      collection: ../postman/collections/[Baseline] payment-refund-api
+    - spec: ../specs/payment-refund-api-openapi.yaml
+      collection: ../postman/collections/[Smoke] payment-refund-api
+    - spec: ../specs/payment-refund-api-openapi.yaml
+      collection: ../postman/collections/[Contract] payment-refund-api

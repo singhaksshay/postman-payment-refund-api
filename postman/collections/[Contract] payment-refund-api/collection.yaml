@@ -18,7 +18,7 @@ description: |-
   Contact Support:
    Name: Payment Platform Team
    Email: payment-platform@example.com
-id: da59842d-814e-4625-a53f-ff8890091526
+id: 8b21a49b-769c-456e-b4fc-3b3ec0b13043
 auth:
   type: oauth2
   credentials:
@@ -37,6 +37,7 @@ auth:
 variables:
   - key: baseUrl
     value: https://api.payments.example.com/v2
+    type: any
 items:
   - ref: ./refunds/folder.yaml
   - ref: ./health/folder.yaml
