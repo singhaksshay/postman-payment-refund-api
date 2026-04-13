@@ -17,8 +17,4 @@ cloudResources:
     ../postman/collections/[Baseline] payment-refund-api: 53321676-96d90a54-a4e4-4d45-95d9-f66053315924
     ../postman/collections/[Smoke] payment-refund-api: 53321676-7fe58943-6c4e-45bc-965a-adf6830e0d67
     ../postman/collections/[Contract] payment-refund-api: 53321676-6946fe9e-7386-4ab2-b70f-c93774bf3be6
-  environments:
-    ../postman/environments/prod.postman_environment.json: 53321676-bd635908-7f76-400d-accf-50a277bfce3c
-    ../postman/environments/uat.postman_environment.json: 53321676-01d02a88-a875-4b77-9ae4-19c0152ee76b
-    ../postman/environments/qa.postman_environment.json: 53321676-8f5769a3-2cab-4a68-9f63-eafa3c7fe3c2
-    ../postman/environments/dev.postman_environment.json: 53321676-8cdfcd5b-c918-440d-b635-87ed4c25d035
+  environments: {}
