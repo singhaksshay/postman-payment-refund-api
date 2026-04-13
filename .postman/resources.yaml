@@ -14,7 +14,11 @@ localResources:
     - ../specs/payment-refund-api-openapi.yaml
 cloudResources:
   collections:
-    ../postman/collections/[Baseline] payment-refund-api: 53321676-96d90a54-a4e4-4d45-95d9-f66053315924
-    ../postman/collections/[Smoke] payment-refund-api: 53321676-7fe58943-6c4e-45bc-965a-adf6830e0d67
-    ../postman/collections/[Contract] payment-refund-api: 53321676-6946fe9e-7386-4ab2-b70f-c93774bf3be6
-  environments: {}
+    ../postman/collections/[Baseline] payment-refund-api: 53321676-af631e01-1dd0-4acf-ba3f-68fdc72b31d3
+    ../postman/collections/[Smoke] payment-refund-api: 53321676-ea90fb97-262d-4b5a-840c-5d4401271075
+    ../postman/collections/[Contract] payment-refund-api: 53321676-20f6de98-e5e8-4332-92bb-b5c5065999a7
+  environments:
+    ../postman/environments/prod.postman_environment.json: 53321676-76f302fd-c608-443b-9a97-c56e0ebfeef2
+    ../postman/environments/uat.postman_environment.json: 53321676-0a9da962-07eb-4ec1-8e22-0492d2986ec3
+    ../postman/environments/qa.postman_environment.json: 53321676-b9cfdd8c-3ed4-4ca9-a95b-c5792ccab0ca
+    ../postman/environments/dev.postman_environment.json: 53321676-4540356e-86e7-4a01-bb33-8b584915cbe7
